@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros de Portaria</title>
+    <style>
+        /* Estilos gerais para a página */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e9f0f391;
+            background-image: url('{{ url_for("static", filename="logo.png") }}');
+            background-position: center center; /* Centraliza a logo */
+            background-repeat: no-repeat;
+            background-size: 4%; /* Ajuste o tamanho da logo */
+            background-attachment: fixed; /* A logo ficará fixa no fundo ao rolar a página */
+            opacity: 0.9; /* Ajuste a opacidade para a logo aparecer mais como uma marca d'água */
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Estilo para o formulário de pesquisa */
+        form {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        form input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form input[type="submit"] {
+            padding: 8px 16px;
+            font-size: 16px;
+            background-color: hsl(199, 89%, 50%);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: hsl(199, 89%, 50%);
+        }
+
+        /* Estilos da tabela */
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: hsl(199, 89%, 50%);
+            color: white;
+        }
+
+        /* Estilo dos botões de ação */
+        .actions a {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 4px;
+            text-decoration: none;
+            color: white;
+            background-color: hsl(199, 89%, 50%);
+            border-radius: 4px;
+        }
+
+        .actions a:hover {
+            background-color:  hsl(199, 89%, 50%);
+        }
+
+        .actions a:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Botões no topo */
+        .top-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #f4f4f9;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .top-buttons a {
+            padding: 10px 20px;
+            background-color: hsl(199, 89%, 50%);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .top-buttons a:hover {
+            background-color: #0056b3;
+        }
+
+        /* Adiciona um pouco de margem e centraliza o conteúdo */
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Ajusta a tabela para ter margem superior */
+        table {
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Botões no topo -->
+    <div class="top-buttons">
+        <a href="/">Voltar para a Tela Inicial</a>
+        <a href="/exportar">Exportar para Excel</a>
+    </div>
+
+    <h1>Registros de Portaria</h1>
+
+    <!-- Formulário de pesquisa -->
+    <form method="POST" action="/registros">
+        <label for="search_name">Pesquisar por Nome:</label>
+        <input type="text" name="search_name" placeholder="Nome do visitante" value="{{ request.form.get('search_name', '') }}">
+        <input type="submit" value="Pesquisar">
+    </form>
+
+    <h2>Lista de Registros</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Data Entrada</th>
+                <th>Nome Completo</th>
+                <th>Empresa</th>
+                <th>Hora Entrada</th>
+                <th>Vigilante Entrada</th>
+                <th>Hora Saída</th>
+                <th>Vigilante Saída</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for registro in registros %}
+            <tr>
+                <td>{{ registro[0] }}</td>
+                <td>{{ registro[1] }}</td>
+                <td>{{ registro[2] }}</td>
+                <td>{{ registro[4] }}</td>
+                <td>{{ registro[7] }}</td>
+                <td>{{ registro[8] }}</td>
+                <td>{{ registro[9] if registro[9] else 'Não Informado' }}</td>
+                <td>{{ registro[10] if registro[10] else 'Não Informado' }}</td>
+                <td class="actions">
+                    <!-- único botão de Editar que pode editar os dois campos -->
+                    <a href="/editar/{{ registro[0] }}" 
+                       {% if registro[9] and registro[10] %} 
+                           style="background-color: #cccccc; cursor: not-allowed;" 
+                           title="Campos já editados"
+                       {% endif %}>
+                       {% if not registro[9] or not registro[10] %}
+                           Registre a Saida
+                       {% else %}
+                           Processo concluído
+                       {% endif %}
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

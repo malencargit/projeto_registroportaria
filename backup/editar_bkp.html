@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Registro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2341ee;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="time"],
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+            transition: border 0.3s ease;
+        }
+
+        input[type="time"]:focus,
+        input[type="text"]:focus {
+            border-color: #4461e2;
+            outline: none;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3387e7;
+        }
+
+        a {
+            text-align: center;
+            display: block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #4CAF50;
+            font-size: 1rem;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Registre a saída</h1>
+
+        <form method="POST" action="/editar/{{ registro[0] }}">
+            <label for="hora_saida">Hora Saída:</label>
+            <input type="time" name="hora_saida" value="{{ registro[9] }}" required>
+
+            <label for="vigilante_saida">Vigilante Saída:</label>
+            <input type="text" name="vigilante_saida" value="{{ registro[10] }}" required>
+
+            <input type="submit" value="Salvar Alterações">
+        </form>
+
+        <a href="/registros">Voltar para a lista de registros</a>
+    </div>
+
+</body>
+
+</html>

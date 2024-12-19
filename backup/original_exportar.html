@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exportar para Excel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #3269e0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="date"] {
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+            transition: border 0.3s ease;
+        }
+
+        input[type="date"]:focus {
+            border-color: #3088ec;
+            outline: none;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3680f0;
+        }
+
+        .error-message {
+            color: #f44336;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+
+        .success-message {
+            color: #4CAF50;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+
+        a {
+            text-align: center;
+            display: block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #4a7ff1;
+            font-size: 1rem;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Exportar Registros</h1>
+
+        <!-- Verifica se o usuário tem permissão para exportar -->
+        {% if 'user_id' in session and session['can_export'] == 1 %}
+        <!-- Formulário para inserir as datas de início e fim -->
+        <form method="POST" action="/exportar">
+            <label for="data_inicio">Data Início:</label>
+            <input type="date" name="data_inicio" required><br><br>
+
+            <label for="data_fim">Data Fim:</label>
+            <input type="date" name="data_fim" required><br><br>
+
+            <input type="submit" value="Exportar">
+        </form>
+
+        {% else %}
+        <!-- Mensagem caso o usuário não tenha permissão para exportar -->
+        <div class="error-message">
+            <p>Você não tem permissão para exportar os registros. Entre em contato com o administrador.</p>
+        </div>
+        {% endif %}
+
+        {% if file_path %}
+        <!-- Exibe o link de download do arquivo gerado -->
+        <div class="success-message">
+            <h3>Exportação realizada com sucesso!</h3>
+            <p><a href="{{ file_path }}" download="registros_portaria.xlsx">Clique aqui para baixar o arquivo Excel</a></p>
+        </div>
+        {% endif %}
+
+        <hr>
+        <a href="/">Voltar para a página inicial</a>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Acessos - Portaria 1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 15px;
+        }
+        header {
+            text-align: center;
+        }
+        header img {
+            width: 320px;  /* Ajusta o tamanho da logo */
+            margin-bottom: 10px;
+        }
+        h1 {
+            margin: 10px 0;
+            font-size: 22px;
+        }
+        h2 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        form {
+            display: grid;
+            gap: 8px;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        input[type="text"], input[type="date"], input[type="time"], input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #069469;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;  /* Garante que o padding não afete o tamanho total */
+        }
+        input[type="submit"] {
+            background-color: hsl(147, 92%, 30%);
+            color: rgb(243, 250, 245);
+            cursor: pointer
+            ;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #2bebb152;
+        }
+        .success-message {
+            color: green;
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+        .search-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-start; /* Alinha os itens à esquerda */
+            margin-bottom: 20px; /* Dá um espaço entre o formulário de pesquisa e o formulário de registro */
+        }
+        .search-form input[type="text"] {
+            width: 70%;
+            padding: 12px;  /* Aumenta o preenchimento interno do campo de texto */
+            font-size: 14px;
+        }
+        .search-form input[type="submit"] {
+            width: 70%;
+            padding: 14px;  /* Aumenta o preenchimento interno do botão */
+            background-color: hsl(199, 89%, 50%);
+            color: white;
+            font-size: 16px;  /* Aumenta o tamanho da fonte no botão */
+            cursor: pointer;
+        }
+        .search-form input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .records-list {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        .records-list li {
+            padding: 10px;
+            background-color: #fff;
+            margin-bottom: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .records-list a {
+            text-decoration: none;
+            color: #4CAF50;
+        }
+        .records-list a:hover {
+            text-decoration: underline;
+        }
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .search-form input[type="text"], .search-form input[type="submit"] {
+                width: 100%;  /* Faz com que ocupe 100% da largura em telas menores */
+            }
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Cabeçalho com a logomarca -->
+        <header>
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logomarca">
+            <h1>CONTROLE DE ACESSOS - PORTARIA 1</h1>
+        </header>
+
+        <!-- Formulário de pesquisa - agora no topo -->
+        <div class="search-form">
+            <form method="POST" action="/registros">
+                <input type="text" name="search_name" placeholder="Pesquisar nome">
+                <input type="submit" value="Pesquisar">
+            </form>
+        </div>
+
+        <!-- Exibição de mensagem de sucesso -->
+        {% if sucesso %}
+            <p class="success-message">{{ sucesso }}</p>
+        {% endif %}
+
+        <!-- Formulário para inserir dados -->
+        <h2>Formulário de Registros</h2>
+        <form method="POST" action="/inserir">
+            <label for="data_entrada">Data Entrada:</label>
+            <input type="date" id="data_entrada" name="data_entrada" required>
+
+            <label for="nome_completo">Nome Completo:</label>
+            <input type="text" id="nome_completo" name="nome_completo" required>
+
+            <label for="documento">Documento:</label>
+            <input type="text" id="documento" name="documento" required>
+
+            <label for="empresa">Empresa:</label>
+            <input type="text" id="empresa" name="empresa" required>
+
+            <label for="motivo">Motivo:</label>
+            <input type="text" id="motivo" name="motivo" required>
+
+            <label for="autorizacao">Autorização:</label>
+            <input type="text" id="autorizacao" name="autorizacao" required>
+
+            <label for="hora_entrada">Hora Entrada:</label>
+            <input type="time" id="hora_entrada" name="hora_entrada" required>
+
+            <label for="vigilante_entrada">Vigilante Entrada:</label>
+            <input type="text" id="vigilante_entrada" name="vigilante_entrada" required>
+
+            <!--Retirado Hora Saida do preenchimento do registro           
+             <label for="hora_saida">Hora Saída:</label>-->
+            <!-- <input type="time" id="hora_saida" name="hora_saida">-->
+
+            <!--Retirado Vigilanta saida do preenchimento do registro
+            <!--<label for="vigilante_saida">Vigilante Saída:</label>-->
+            <!--<input type="text" id="vigilante_saida" name="vigilante_saida">-->
+
+            <input type="submit" value="Salvar">
+        </form>
+
+        <hr>
+
+        <!-- Exibição de registros -->
+
+        <!--<h2>Registros</h2>
+        <ul class="records-list">
+            {% for registro in registros %}
+                <li>
+                    {{ registro[1] }} - {{ registro[2] }} - <a href="/editar/{{ registro[0] }}">Editar</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

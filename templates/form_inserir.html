@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Inserção</title>
+</head>
+<body>
+    <h1>Inserir Registro</h1>
+    
+    <!-- Exibe mensagem de sucesso, se existir -->
+    {% if sucesso %}
+        <p style="color: green;">{{ sucesso }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <!-- Campo para data de entrada -->
+        <label for="data_entrada">Data de Entrada:</label>
+        <input type="date" id="data_entrada" name="data_entrada" required><br><br>
+
+        <!-- Campo para nome completo -->
+        <label for="nome_completo">Nome Completo:</label>
+        <input type="text" id="nome_completo" name="nome_completo" required><br><br>
+
+        <!-- Campo para documento -->
+        <label for="documento">Documento:</label>
+        <input type="text" id="documento" name="documento" required><br><br>
+
+        <!-- Campo para empresa -->
+        <label for="empresa">Empresa:</label>
+        <input type="text" id="empresa" name="empresa" required><br><br>
+
+        <!-- Campo para motivo -->
+        <label for="motivo">Motivo:</label>
+        <input type="text" id="motivo" name="motivo" required><br><br>
+
+        <!-- Campo para autorização -->
+        <label for="autorizacao">Autorização:</label>
+        <input type="text" id="autorizacao" name="autorizacao" required><br><br>
+
+        <!-- Campo para hora de entrada -->
+        <label for="hora_entrada">Hora de Entrada:</label>
+        <input type="time" id="hora_entrada" name="hora_entrada" required><br><br>
+
+        <!-- Campo para selecionar o vigilante de entrada -->
+        <label for="vigilante_entrada">Vigilante de Entrada:</label>
+        <select name="vigilante_entrada" id="vigilante_entrada" required>
+            <option value="" disabled selected>Selecione o vigilante de entrada</option>
+            {% for vigilante in vigilantes %}
+                <option value="{{ vigilante[0] }}">{{ vigilante[1] }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+
+        <!-- Campo para hora de saída -->
+        <label for="hora_saida">Hora de Saída:</label>
+        <input type="time" id="hora_saida" name="hora_saida"><br><br>
+
+        <!-- Campo para selecionar o vigilante de saída -->
+        <label for="vigilante_saida">Vigilante de Saída:</label>
+        <select name="vigilante_saida" id="vigilante_saida">
+            <option value="" disabled selected>Selecione o vigilante de saída (opcional)</option>
+            {% for vigilante in vigilantes %}
+                <option value="{{ vigilante[0] }}">{{ vigilante[1] }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+
+        <!-- Botão para enviar o formulário -->
+        <input type="submit" value="Salvar">
+    </form>
+
+</body>
+</html>

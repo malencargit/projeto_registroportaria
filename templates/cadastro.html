@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuário</title>
+</head>
+<body>
+    <h1>Cadastro de Usuário</h1>
+
+    <form method="POST" action="/cadastro">
+        <label for="username">Nome de Usuário:</label>
+        <input type="text" name="username" required><br><br>
+
+        <label for="password">Senha:</label>
+        <input type="password" name="password" required><br><br>
+
+        <!-- Adicionando o campo can_export -->        
+        <label for="can_export">Permissão para Exportar:</label>
+        <input type="checkbox" name="can_export"><br><br>
+
+        <input type="submit" value="Cadastrar">
+    </form>
+
+    <hr>
+    <a href="/login">Já tenho uma conta. Fazer login</a>
+</body>
+</html>
